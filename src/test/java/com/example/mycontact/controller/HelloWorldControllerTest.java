@@ -9,7 +9,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class HelloWorldControllerTest {
@@ -21,7 +21,10 @@ class HelloWorldControllerTest {
     @Test
     void helloWorld(){
         System.out.println(helloWorldController.helloWorld());
+        assertThat(helloWorldController.helloWorld()).isEqualTo("HelloWorld");
     }
+
+
 
     @Test
     void mockMvcTest() throws Exception {
