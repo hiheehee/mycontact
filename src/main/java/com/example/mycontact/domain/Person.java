@@ -1,10 +1,19 @@
 package com.example.mycontact.domain;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
+@ToString(exclude = "phoneNumber")
 public class Person {
     @Id
     @GeneratedValue
@@ -14,36 +23,16 @@ public class Person {
 
     private int age;
 
-    public Long getId() {
-        return id;
-    }
+    @ToString.Exclude
+    private String hobby;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private String bloodType;
 
-    public int getAge() {
-        return age;
-    }
+    private String address;
 
-    public void setAge(int age) {
-        this.age = age;
-    }
+    private String job;
 
-    public String getName() {
-        return name;
-    }
+    private LocalDateTime birthday;
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString(){
-        return "Person{"+
-                " id : "+ id +
-                " name : "+ name +
-                " age : " + age +
-                "}";
-    }
+    private String phoneNumber;
 }
