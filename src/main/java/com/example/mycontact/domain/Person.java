@@ -1,8 +1,10 @@
 package com.example.mycontact.domain;
 
+import com.example.mycontact.domain.dto.Birthday;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -32,7 +34,9 @@ public class Person {
 
     private String job;
 
-    private LocalDate birthday;
+    @Valid
+    @Embedded
+    private Birthday birthday;
 
     @ToString.Exclude
     private String phoneNumber;
