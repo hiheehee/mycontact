@@ -2,10 +2,7 @@ package com.example.mycontact.domain;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -39,6 +36,7 @@ public class Person {
     @ToString.Exclude
     private String phoneNumber;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @ToString.Exclude
     private Block block;
 }
