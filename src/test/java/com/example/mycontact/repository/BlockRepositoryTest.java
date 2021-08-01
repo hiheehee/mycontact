@@ -18,8 +18,7 @@ class BlockRepositoryTest {
 
     @Test
     void crud(){
-        Block block = new Block();
-        block.setName("martin");
+        Block block = new Block("martin");
         block.setReason("친하지 않음");
         block.setStartDate(LocalDateTime.now());
         block.setEndDate(LocalDateTime.now());

@@ -23,7 +23,6 @@ class PersonRepositoryTest {
         Person person = new Person();
         person.setAge(10);
         person.setName("admin");
-        person.isBlock();
         personRepository.save(person);
 
         List<Person> people = personRepository.findAll();
