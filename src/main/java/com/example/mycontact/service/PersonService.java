@@ -33,6 +33,11 @@ public class PersonService {
         return person;
     }
 
+    @Transactional
+    public void put(Person person){
+        personRepository.save(person);
+    }
+
     public List<Person> getPeopleByName(String name){
         // List<Person> people = personRepository.findAll();
         // return people.stream().filter(person -> person.getName().equals(name)).collect(Collectors.toList());
