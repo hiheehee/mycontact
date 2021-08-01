@@ -9,6 +9,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
+import static org.assertj.core.api.InstanceOfAssertFactories.LOCAL_DATE;
 
 @SpringBootTest
 class PersonRepositoryTest {
@@ -27,4 +28,12 @@ class PersonRepositoryTest {
         assertThat(people.get(0).getName()).isEqualTo("admin");
         assertThat(people.get(0).getAge()).isEqualTo(10);
     }
+
+    @Test
+    void hashCodeEquals(){
+        Person person1 = new Person("martin",10);
+        Person person2 = new Person("martin",10);
+
+        System.out.println(person1.equals(person2));
+   }
 }
