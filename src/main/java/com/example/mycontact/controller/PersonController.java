@@ -1,5 +1,6 @@
 package com.example.mycontact.controller;
 
+import com.example.mycontact.controller.dto.PersonDto;
 import com.example.mycontact.domain.Person;
 import com.example.mycontact.repository.PersonRepository;
 import com.example.mycontact.service.PersonService;
@@ -29,5 +30,15 @@ public class PersonController {
         personService.put(person);
     }
 
+    @PutMapping("/{id}")
+    public void modifyPerson(@PathVariable Long id, @RequestBody PersonDto personDto){
+        personService.modify(id, personDto);
+        log.info("person -> {}", personRepository.findAll());
+    }
 
+    @PatchMapping("/{id}")
+    public void modifyPerson(@PathVariable Long id, String name){
+        personService.modify(id, name);
+        log.info("person -> {}", personRepository.findAll());
+    }
 }
