@@ -3,6 +3,7 @@ package com.example.mycontact.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -31,12 +32,12 @@ public class Person {
 
     private String job;
 
-    private LocalDateTime birthday;
+    private LocalDate birthday;
 
     @ToString.Exclude
     private String phoneNumber;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private Block block;
 }
