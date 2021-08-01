@@ -33,5 +33,8 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
     // 인자 이름으로 받는 방법
     @Query(value = "select person from Person person where person.birthday.monthOfBirthday = :monthOfBirthday")
     List<Person> findByMothOfBirthday(@Param("monthOfBirthday") int monthOfBirthday);
+
+    @Query(value = "select * from person where person.deleted = true", nativeQuery = true)
+    List<Person> findPeopleDeleted();
 }
 

@@ -1,5 +1,7 @@
 package com.example.mycontact.domain;
 
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Where;
 import org.springframework.util.StringUtils;
 import com.example.mycontact.controller.dto.PersonDto;
 import com.example.mycontact.domain.dto.Birthday;
@@ -15,6 +17,7 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Data
+@Where(clause = "deleted = fales")
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +49,9 @@ public class Person {
 
     @ToString.Exclude
     private String phoneNumber;
+
+    @ColumnDefault("0")
+    private boolean deleted;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude

@@ -67,4 +67,14 @@ public class PersonService {
 
         personRepository.save(person);
     }
+    @Transactional
+    public void delete(Long id) {
+        // 실제로 데이터를 바로 지울 수 있지만 이는 매우 위험한 방식이므로 boolean값만 변경해주도록 한다.
+        // personRepository.deleteById(id);
+
+        //  데이터 조회
+        Person person = personRepository.findById(id).orElseThrow(() -> new RuntimeException("아이디가 존재하지 않습니다."));
+        person.setDeleted(true);
+        personRepository.save(person);
+    }
 }
