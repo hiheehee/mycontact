@@ -35,5 +35,14 @@ public class Person {
 
     private LocalDateTime birthday;
 
+    @ToString.Exclude
     private String phoneNumber;
+
+    private boolean block;
+
+    private String blockReason;
+
+    private LocalDateTime blockStartDate;
+
+    private LocalDateTime blockEndDate;
 }
