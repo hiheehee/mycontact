@@ -4,15 +4,16 @@ import com.example.mycontact.domain.Person;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
-import static org.assertj.core.api.InstanceOfAssertFactories.LOCAL_DATE;
 
+@Transactional
 @SpringBootTest
 class PersonRepositoryTest {
 
@@ -22,26 +23,30 @@ class PersonRepositoryTest {
     void crud(){
         Person person = new Person();
         person.setAge(10);
-        person.setName("admin");
+        person.setName("john");
+        person.setBloodType("A");
+
         personRepository.save(person);
 
-        List<Person> people = personRepository.findAll();
-        assertThat(people.size()).isEqualTo(1);
-        assertThat(people.get(0).getName()).isEqualTo("admin");
+        List<Person> people = personRepository.findByName("john");
+        assertThat(people.get(0).getName()).isEqualTo("john");
         assertThat(people.get(0).getAge()).isEqualTo(10);
+        assertThat(people.get(0).getBloodType()).isEqualTo("A");
     }
 
     @Test
-    void hashCodeEquals(){
-        Person person1 = new Person("martin", 10, "A");
-        Person person2 = new Person("martin", 10, "A");
+    void findByBloodType(){
+        List<Person> result = personRepository.findByBloodType("A");
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result.get(0).getName()).isEqualTo("martin");
+        assertThat(result.get(1).getName()).isEqualTo("benny");
+    }
 
-        System.out.println(person1.equals(person2));
-
-        Map<Person, Integer> map = new HashMap<>();
-        map.put(person1, person1.getAge());
-
-        System.out.println(map);
-        System.out.println(map.get(person2));
-   }
+    @Test
+    void findByBirthdayBetween(){
+        List<Person> result = personRepository.findByMothOfBirthday(8);
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result.get(0).getName()).isEqualTo("martin");
+        assertThat(result.get(1).getName()).isEqualTo("sophia");
+    }
 }
