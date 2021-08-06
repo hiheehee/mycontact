@@ -49,7 +49,6 @@ class PersonControllerTest {
                 .content("{\n" +
                         "    \"name\": \"martin2\",\n" +
                         "    \"age\": 20,\n" +
-                        "    \"bloodType\": \"A\"\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().isCreated());
@@ -63,7 +62,6 @@ class PersonControllerTest {
                 .content("{\n" +
                         "    \"name\": \"martin\",\n" +
                         "    \"age\": 20,\n" +
-                        "    \"bloodType\": \"A\"\n" +
                         "}"))
                 .andDo(print())
                 .andExpect(status().isOk());
