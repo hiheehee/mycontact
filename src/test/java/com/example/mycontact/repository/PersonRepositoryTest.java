@@ -22,7 +22,6 @@ class PersonRepositoryTest {
     @Test
     void crud(){
         Person person = new Person();
-        person.setAge(10);
         person.setName("john");
         person.setBloodType("A");
 
@@ -30,7 +29,7 @@ class PersonRepositoryTest {
 
         List<Person> people = personRepository.findByName("john");
         assertThat(people.get(0).getName()).isEqualTo("john");
-        assertThat(people.get(0).getAge()).isEqualTo(10);
+        // assertThat(people.get(0).getAge()).isEqualTo(10);
         assertThat(people.get(0).getBloodType()).isEqualTo("A");
     }
 
@@ -45,6 +44,7 @@ class PersonRepositoryTest {
     @Test
     void findByBirthdayBetween(){
         List<Person> result = personRepository.findByMothOfBirthday(8);
+
         assertThat(result.size()).isEqualTo(2);
         assertThat(result.get(0).getName()).isEqualTo("martin");
         assertThat(result.get(1).getName()).isEqualTo("sophia");
