@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.util.NestedServletException;
 
 import java.time.LocalDate;
@@ -33,26 +34,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @Slf4j
 @Transactional
 class PersonControllerTest {
-    @Autowired
-    private PersonController personController;
+    private MockMvc mockMvc;
 
     @Autowired
     private PersonRepository personRepository;
-
-    private MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter messageConverter;
+    private WebApplicationContext wac;
 
     @BeforeEach
-    void beforeEach(){
+    void beforeEach() {
         mockMvc = MockMvcBuilders
-                .standaloneSetup(personController)
-                .setMessageConverters(messageConverter)
-                .alwaysDo(print())
+                .webAppContextSetup(wac)
                 .build();
     }
 
@@ -171,7 +167,7 @@ class PersonControllerTest {
 
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/person")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(toJsonString(dto)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value(400))
