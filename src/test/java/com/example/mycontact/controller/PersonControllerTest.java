@@ -93,13 +93,13 @@ class PersonControllerTest {
 
     @Test
     void modifyPerson() throws Exception {
-        PersonDto dto = PersonDto.of("martin", "programming", "판교", LocalDate.now(), "programmer", "010-1111-2222");
+        PersonDto dto = PersonDto
+                .of("martin", "programming", "판교", LocalDate.now(), "programmer", "010-1111-2222");
 
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/api/person/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(toJsonString(dto)))
-                .andDo(print())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJsonString(dto)))
                 .andExpect(status().isOk());
 
         Person result = personRepository.findById(1L).get();
@@ -147,7 +147,7 @@ class PersonControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        assertTrue(personRepository.findPeopleDeleted().stream().anyMatch(person -> person.getId().equals(1L)));
+        assertTrue(personRepository.findPeopleDelete().stream().anyMatch(person -> person.getId().equals(1L)));
     }
 
     private String toJsonString(PersonDto personDto) throws JsonProcessingException {

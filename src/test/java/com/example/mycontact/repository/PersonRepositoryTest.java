@@ -41,7 +41,7 @@ class PersonRepositoryTest {
 
     @Test
     void findPeopleDeleted() {
-        List<Person> people = personRepository.findPeopleDeleted();
+        List<Person> people = personRepository.findPeopleDelete();
 
         assertThat(people.size()).isEqualTo(1);
         assertThat(people.get(0).getName()).isEqualTo("andrew");
