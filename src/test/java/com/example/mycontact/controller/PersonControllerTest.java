@@ -133,8 +133,7 @@ class PersonControllerTest {
     void modifyName() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.patch("/api/person/1")
-                        .param("name", "martinModifed"))
-                .andDo(print())
+                        .param("name", "martinModified"))
                 .andExpect(status().isOk());
 
         assertThat(personRepository.findById(1L).get().getName()).isEqualTo("martinModified");
