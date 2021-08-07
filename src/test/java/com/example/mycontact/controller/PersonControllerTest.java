@@ -49,7 +49,11 @@ class PersonControllerTest {
 
     @BeforeEach
     void beforeEach(){
-        mockMvc = MockMvcBuilders.standaloneSetup(personController).setMessageConverters(messageConverter).build();
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(personController)
+                .setMessageConverters(messageConverter)
+                .alwaysDo(print())
+                .build();
     }
 
     @Test
@@ -98,7 +102,7 @@ class PersonControllerTest {
 
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/api/person/1")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content(toJsonString(dto)))
                 .andExpect(status().isOk());
 
@@ -119,15 +123,28 @@ class PersonControllerTest {
         PersonDto dto = PersonDto
                 .of("james", "programming", "판교", LocalDate.now(), "programmer", "010-1111-2222");
 
-        assertThrows(NestedServletException.class, () ->
-                mockMvc.perform(
-                    MockMvcRequestBuilders.put("/api/person/1")
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/person/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(toJsonString(dto)))
-                .andDo(print())
-                .andExpect(status().isOk()));
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value(400))
+                .andExpect(jsonPath("$.message").value("이름 변경이 허용되지 않습니다."));
     }
 
+    @Test
+    void modifyPersonIfPersonNotFound() throws Exception {
+        PersonDto dto = PersonDto
+                .of("james", "programming", "판교", LocalDate.now(), "programmer", "010-1111-2222");
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/person/10")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJsonString(dto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value(400))
+                .andExpect(jsonPath("$.message").value("Person Entity가 존재하지 않습니다."));
+    }
 
     @Test
     void modifyName() throws Exception {
@@ -143,11 +160,24 @@ class PersonControllerTest {
     void deletePerson() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/api/person/1"))
-                .andDo(print())
                 .andExpect(status().isOk());
 
         assertTrue(personRepository.findPeopleDelete().stream().anyMatch(person -> person.getId().equals(1L)));
     }
+
+    @Test
+    void postPersonIfNameIsNull() throws Exception{
+        PersonDto dto = new PersonDto();
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/person")
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(toJsonString(dto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value(400))
+                .andExpect(jsonPath("$.message").value("이름은 필수값입니다"));
+    }
+
 
     private String toJsonString(PersonDto personDto) throws JsonProcessingException {
         return objectMapper.writeValueAsString(personDto);
