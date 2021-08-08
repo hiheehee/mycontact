@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -48,11 +50,8 @@ public class PersonService {
     public void modify(Long id, PersonDto personDto) {
         //  데이터 조회
         Person person = personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
-
         if(!person.getName().equals(personDto.getName())) throw new RenameNotPermiitedException();
-
         person.set(personDto);
-
         personRepository.save(person);
     }
 
@@ -60,9 +59,7 @@ public class PersonService {
     public void modify(Long id, String name) {
         //  데이터 조회
         Person person = personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
-
         person.setName(name);
-
         personRepository.save(person);
     }
     @Transactional
@@ -78,5 +75,9 @@ public class PersonService {
 
     public List<Person> getAll() {
         return personRepository.findAll();
+    }
+
+    public List<Person> getBirthdayFriends() {
+        return personRepository.findByMonthOfBirthdayAndDayOfBirthday(LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth(), LocalDate.now().plusDays(1).getDayOfMonth(), LocalDate.now().plusDays(1).getDayOfMonth());
     }
 }

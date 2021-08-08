@@ -85,7 +85,6 @@ class PersonServiceTest {
                 .thenReturn(Optional.empty());
 
         Person person = personService.getPerson(1L);
-
         assertThat(person).isNull();
     }
 
@@ -201,5 +200,15 @@ class PersonServiceTest {
         public boolean matches(Person person) {
             return person.isDeleted();
         }
+    }
+
+    @Test
+    void getBirthdayFriends() {
+        when(personRepository.findByMonthOfBirthdayAndDayOfBirthday(8, 8, 8, 9))
+                .thenReturn(Lists.newArrayList(new Person("buzz"), new Person("woody"), new Person("jessie"), new Person("trixie")));
+
+        List<Person> result = personService.getBirthdayFriends();
+        assertThat(result.size()).isEqualTo(4);
+        assertThat(result.get(0).getName()).isEqualTo("buzz");
     }
 }

@@ -6,7 +6,6 @@ import com.example.mycontact.domain.dto.Birthday;
 import com.example.mycontact.repository.PersonRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -19,17 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.util.NestedServletException;
 
 import java.time.LocalDate;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest
 @Slf4j
@@ -79,9 +74,8 @@ class PersonControllerTest {
                 .andExpect(jsonPath("$.phoneNumber").isEmpty())
                 .andExpect(jsonPath("$.deleted").value(false))
                 .andExpect(jsonPath("$.age").isNumber())
-                .andExpect(jsonPath("$.birthdayToday").isBoolean());;
+                .andExpect(jsonPath("$.birthdayToday").isBoolean());
     }
-
 
     @Test
     void postPerson() throws Exception {
@@ -217,8 +211,17 @@ class PersonControllerTest {
                 .andExpect(jsonPath("$.message").value("이름은 필수값입니다"));
     }
 
-
     private String toJsonString(PersonDto personDto) throws JsonProcessingException {
         return objectMapper.writeValueAsString(personDto);
+    }
+
+    @Test
+    void getBirthdayPerson() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/person/birthday-friends"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].name").value("buzz"))
+                .andExpect(jsonPath("$.[1].name").value("woody"))
+                .andExpect(jsonPath("$.[2].name").value("jessie"))
+                .andExpect(jsonPath("$.[3].name").value("trixie"));
     }
 }

@@ -57,4 +57,17 @@ class PersonRepositoryTest {
                 () -> assertThat(people.get(1).getName()).isEqualTo("tony")
         );
     }
+
+    @Test
+    void findByMonthOfBirthdayAndDayOfBirAndBirthday(){
+        List<Person> people = personRepository.findByMonthOfBirthdayAndDayOfBirthday(8, 8,8,9);
+
+        assertThat(people.size()).isEqualTo(4);
+        assertAll(
+                () -> assertThat(people.get(0).getName()).isEqualTo("buzz"),
+                () -> assertThat(people.get(1).getName()).isEqualTo("woody"),
+                () -> assertThat(people.get(2).getName()).isEqualTo("jessie"),
+                () -> assertThat(people.get(3).getName()).isEqualTo("trixie")
+        );
+    }
 }

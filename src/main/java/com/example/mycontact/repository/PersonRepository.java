@@ -33,4 +33,7 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
 
     @Query(value = "select * from Person person where person.deleted = true", nativeQuery = true)
     List<Person> findPeopleDelete();
+
+    @Query(value = "select person from Person person where (person.birthday.monthOfBirthday = :todayMonthOfBirthday and person.birthday.dayOfBirthday = :todayDayOfBirthday) or (person.birthday.monthOfBirthday = :tomorrowMonthOfBirthday and person.birthday.dayOfBirthday = :tomorrowDayOfBirthday)")
+    List<Person> findByMonthOfBirthdayAndDayOfBirthday(@Param("todayMonthOfBirthday") int todayMonthOfBirthday, @Param("todayDayOfBirthday") int todayDayOfBirthday, @Param("tomorrowMonthOfBirthday") int tomorrowMonthOfBirthday, @Param("tomorrowDayOfBirthday") int tomorrowDayOfBirthday);
 }
