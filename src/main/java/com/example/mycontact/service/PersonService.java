@@ -7,9 +7,11 @@ import com.example.mycontact.exception.RenameNotPermiitedException;
 import com.example.mycontact.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
@@ -22,6 +24,10 @@ public class PersonService {
     @Transactional(readOnly = true)
     public Person getPerson(Long id){
         return personRepository.findById(id).orElse(null);
+    }
+
+    public Page<Person> getAll(Pageable pageable) {
+        return personRepository.findAll(pageable);
     }
 
     @Transactional
@@ -68,5 +74,9 @@ public class PersonService {
         Person person = personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
         person.setDeleted(true);
         personRepository.save(person);
+    }
+
+    public List<Person> getAll() {
+        return personRepository.findAll();
     }
 }

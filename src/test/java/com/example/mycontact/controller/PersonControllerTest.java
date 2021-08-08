@@ -6,6 +6,7 @@ import com.example.mycontact.domain.dto.Birthday;
 import com.example.mycontact.repository.PersonRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -50,6 +51,20 @@ class PersonControllerTest {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(wac)
                 .build();
+    }
+
+    @Test
+    void getAll() throws Exception{
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/person")
+                        .param("page", "1")
+                        .param("size", "2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalPages").value(3))
+                .andExpect(jsonPath("$.totalElements").value(6))
+                .andExpect(jsonPath("$.numberOfElements").value(2))
+                .andExpect(jsonPath("$.content.[0].name").value("dennis"))
+                .andExpect(jsonPath("$.content.[1].name").value("sophia"));
     }
 
     @Test
